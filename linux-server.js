@@ -22,15 +22,15 @@ io.on('connection', (socket) => {
     console.log("=== creating stream ===");
     fs.createReadStream('logs.txt')
     .on('data', (chunk) => {
-      const lines = chunk.toString().split('\n');
-      console.log(lines)
-      // for (let i = 0; i < 10; i++) {
-      //   setTimeout(() => {
-      //     console.log('Lines streamed: ', i+1);
-      //     console.log('\n', lines[-i])
-      //     socket.emit('linux-logs', { a: lines[-i], b: i + 1});
-      //   }, i * 1500);
-      // }
+      const lines = chunk.toString().split('\n').slice(-10);
+      // console.log(lines)
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          console.log('Lines streamed: ', i+1);
+          console.log('\n', lines[i])
+          socket.emit('linux-logs', { a: lines[i], b: i + 1});
+        }, i * 1500);
+      }
     });
   });
 
