@@ -36,7 +36,7 @@ app.post('/api/linux-logs', (req, res) => {
         const lines = data.split("\n");
         const lastFewLines = lines.slice(-5);
         lastFewLines.forEach(function(line) {
-            res.write(line + '\n');
+          setInterval(res.write(line + '\n'), 1500);
         });
         res.end();
     });
