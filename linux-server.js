@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
           console.log('Lines streamed: ', i+1);
           console.log('\n', lines[i])
           socket.emit('linux-logs', { lineData: lines[i], lineNum: i + 1});
-        }, i * 1500);
+        }, 1500);
       }
     });
   });
