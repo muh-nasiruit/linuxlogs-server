@@ -29,18 +29,29 @@ app.post('/api/linux-logs', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/plain'});
     const readStream = fs.createReadStream('logs.txt', 'utf8');
     let data = '';
+    const timeInterval = 1000;  // time interval in milliseconds
+    let index = 0;
     readStream.on('data', function(chunk) {
         data += chunk;
     });
     readStream.on('end', function() {
         const lines = data.split("\n");
         const lastFewLines = lines.slice(-5);
-        lastFewLines.forEach(function(line) {
-          setTimeout(() => {
-            res.write(line + '\n');
-          }, 1500);
-        });
-        res.end();
+        // lastFewLines.forEach(function(line) {
+        //   setTimeout(() => {
+        //     res.write(line + '\n');
+        //   }, 1500);
+        // });
+        const intervalId = setInterval(function() {
+          index++;
+          if (index < lastFewLines.length) {
+              res.write(lastFewLines[index]);
+          } else {
+              clearInterval(intervalId);
+              res.end();
+          }
+      }, timeInterval);
+        // res.end();
     });
     // res.send('Logs Saved');
   });
