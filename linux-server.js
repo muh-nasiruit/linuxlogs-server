@@ -37,21 +37,15 @@ app.post('/api/linux-logs', (req, res) => {
     readStream.on('end', function() {
         const lines = data.split("\n");
         const lastFewLines = lines.slice(-5);
-        // lastFewLines.forEach(function(line) {
-        //   setTimeout(() => {
-        //     res.write(line + '\n');
-        //   }, 1500);
-        // });
-        const intervalId = setInterval(function() {
-          index++;
-          if (index < lastFewLines.length) {
-              res.write(lastFewLines[index]);
-          } else {
-              clearInterval(intervalId);
+        lastFewLines.forEach(function(line) {
+          setTimeout(() => {
+            if (index < lastFewLines.length) {
+              res.write(line + '\n');
+            } else {
               res.end();
-          }
-      }, timeInterval);
-        // res.end();
+            }
+          }, 1500);
+        });
     });
     // res.send('Logs Saved');
   });
