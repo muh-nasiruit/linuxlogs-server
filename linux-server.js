@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
       for (let i = 0; i < 10; i++) {
         setTimeout(() => {
           console.log('Lines streamed: ', i+1);
+          console.log('\n', lines[-i])
           socket.emit('linux-logs', { a: lines[-i], b: i + 1});
         }, i * 1500);
       }
