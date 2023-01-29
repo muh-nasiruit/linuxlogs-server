@@ -26,6 +26,7 @@ app.post('/api/linux-logs', (req, res) => {
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
     console.log("Saving log");
+    res.send('Logs Saved');
   });
 })
 
