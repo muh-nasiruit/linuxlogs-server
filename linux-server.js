@@ -55,8 +55,6 @@ app.post('/api/linux-logs', (req, res) => {
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
     console.log("Saving log");
-    const readStream = fs.createReadStream('logs.txt', 'utf8');
-    // res.send('Logs Saved');
   });
 })
 
