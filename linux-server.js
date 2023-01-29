@@ -26,7 +26,21 @@ app.post('/api/linux-logs', (req, res) => {
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
     console.log("Saving log");
-    res.send('Logs Saved');
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    const readStream = fs.createReadStream('logs.txt', 'utf8');
+    const data = '';
+    readStream.on('data', function(chunk) {
+        data += chunk;
+    });
+    readStream.on('end', function() {
+        const lines = data.split("\n");
+        const lastFewLines = lines.slice(-5);
+        lastFewLines.forEach(function(line) {
+            res.write(line + '\n');
+        });
+        res.end();
+    });
+    // res.send('Logs Saved');
   });
 })
 
