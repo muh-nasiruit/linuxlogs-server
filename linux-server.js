@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     //       socket.emit('linux-logs', { a: lines[-i], b: i + 1});
     //     }, i * 1500);
     //   }
-    });
+    // });
   });
 
     socket.on("disconnect", () => {
@@ -55,6 +55,7 @@ app.post('/api/linux-logs', (req, res) => {
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
     console.log("Saving log");
+    res.send("API SUCCESSFUL");
   });
 })
 
