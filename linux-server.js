@@ -28,7 +28,7 @@ app.post('/api/linux-logs', (req, res) => {
     console.log("Saving log");
     res.writeHead(200, {'Content-Type': 'text/plain'});
     const readStream = fs.createReadStream('logs.txt', 'utf8');
-    const data = '';
+    let data = '';
     readStream.on('data', function(chunk) {
         data += chunk;
     });
