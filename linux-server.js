@@ -41,6 +41,7 @@ app.post('/api/linux-logs', (req, res) => {
           setTimeout(() => {
             if (index < lastFewLines.length) {
               res.write(line + '\n');
+              index++;
             } else {
               res.end();
             }
