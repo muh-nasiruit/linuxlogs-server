@@ -20,16 +20,16 @@ io.on('connection', (socket) => {
   console.log("Socket Connected");
   socket.on("linux-logs", (data) => {
     console.log("=== creating stream ===");
-    // fs.createReadStream('logs.txt')
-    // .on('data', (chunk) => {
-    //   const lines = chunk.toString().split('\n');
-    //   for (let i = 0; i < 10; i++) {
-    //     setTimeout(() => {
-    //       console.log('Lines streamed: ', i+1);
-    //       socket.emit('linux-logs', { a: lines[-i], b: i + 1});
-    //     }, i * 1500);
-    //   }
-    // });
+    fs.createReadStream('logs.txt')
+    .on('data', (chunk) => {
+      const lines = chunk.toString().split('\n');
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          console.log('Lines streamed: ', i+1);
+          socket.emit('linux-logs', { a: lines[-i], b: i + 1});
+        }, i * 1500);
+      }
+    });
   });
 
     socket.on("disconnect", () => {
