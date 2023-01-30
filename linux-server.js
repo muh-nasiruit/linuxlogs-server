@@ -51,16 +51,19 @@ app.post('/api/linux-logs', (req, res) => {
   // const command = 'cat /var/log/syslog';
   const filePath = '/home/servers/linuxlogs-server/logs.txt';
 
-  exec(`${command} > ${filePath}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
-    }
+  if (pathSys === '/var/log/syslog') {
+    exec(`${command} > ${filePath}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log("Saving log");
+    });
+  }
+
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
-    console.log("Saving log");
-    res.send("API SUCCESSFUL");
-  });
+  res.send("API SUCCESSFUL");
 })
 
 app.listen(port, () => {
