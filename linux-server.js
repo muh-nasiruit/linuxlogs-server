@@ -4,7 +4,7 @@ const http = require("http");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const spawn = require('child_process').spawn;
+// const spawn = require('child_process').spawn;
 const { exec } = require('child_process');
 
 const server = http.createServer(app);
@@ -44,11 +44,13 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.post('/api/linux-logs', (req, res) => {
-  // const tail = spawn('tail', ['-n 5', '/var/log/syslog']);
-	// tail.stdout.pipe(res);
-  const command = 'cat /var/log/syslog';
+  const {user, ipAdd, passWord, pathSys} = req.body;
+  console.log(`${user}@${ipAdd} connected.`);
+
+  const command = `cat ${pathSys}`;
+  // const command = 'cat /var/log/syslog';
   const filePath = '/home/servers/linuxlogs-server/logs.txt';
-  
+
   exec(`${command} > ${filePath}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
