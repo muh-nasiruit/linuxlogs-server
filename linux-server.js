@@ -16,6 +16,13 @@ const io = require("socket.io")(server, {
   },
 });
 
+fs.watch('/var/log/syslog', (eventType, filename) => {
+  if (eventType === 'change') {
+    console.log(`File ${filename} was changed!`);
+    // Run your function here
+  }
+});
+
 io.on('connection', (socket) => {
   console.log("Socket Connected");
   socket.on("linux-logs", (data) => {
@@ -47,7 +54,7 @@ app.post('/api/linux-logs', (req, res) => {
   const {user, ipAdd, passWord, pathSys} = req.body;
   console.log(`${user}@${ipAdd} connected.`);
 
-  const command = `cat ${pathSys}`;
+  const command = `tail -n 10 ${pathSys}`;
   // const command = 'cat /var/log/syslog';
   const filePath = '/home/servers/linuxlogs-server/logs.txt';
 
