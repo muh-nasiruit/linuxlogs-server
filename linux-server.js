@@ -16,22 +16,9 @@ const io = require("socket.io")(server, {
   },
 });
 
-fs.watch('/var/log/syslog', (eventType, filename) => {
-  if (eventType === 'change') {
-    console.log(`File ${filename} was changed!`);
-    exec('tail -n 1 /var/log/syslog', (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      // console.log(stdout);
-      socket.emit('linux-logs', { lineData: stdout, lineNum: 0});
-    });
-  }
-});
-
 io.on('connection', (socket) => {
   console.log("Socket Connected");
+
   socket.on("linux-logs", (data) => {
     console.log("=== creating stream ===");
     fs.createReadStream('logs.txt')
@@ -46,6 +33,20 @@ io.on('connection', (socket) => {
         }, i * 1500);
       }
     });
+  });
+  
+  fs.watch('/var/log/syslog', (eventType, filename) => {
+    if (eventType === 'change') {
+      console.log(`File ${filename} was changed!`);
+      exec('tail -n 1 /var/log/syslog', (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        // console.log(stdout);
+        socket.emit('linux-logs', { lineData: stdout, lineNum: 0});
+      });
+    }
   });
 
     socket.on("disconnect", () => {
