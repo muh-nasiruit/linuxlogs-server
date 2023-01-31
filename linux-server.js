@@ -19,7 +19,13 @@ const io = require("socket.io")(server, {
 fs.watch('/var/log/syslog', (eventType, filename) => {
   if (eventType === 'change') {
     console.log(`File ${filename} was changed!`);
-    // Run your function here
+    exec('tail -n 1 /var/log/syslog', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(stdout);
+    });
   }
 });
 
