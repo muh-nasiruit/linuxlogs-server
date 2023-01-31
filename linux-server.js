@@ -24,7 +24,8 @@ fs.watch('/var/log/syslog', (eventType, filename) => {
         console.error(err);
         return;
       }
-      console.log(stdout);
+      // console.log(stdout);
+      socket.emit('linux-logs', { lineData: stdout, lineNum: 0});
     });
   }
 });
