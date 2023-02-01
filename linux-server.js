@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
       }
     });
   });
-  
+
   fs.watch('/var/log/syslog', (eventType, filename) => {
     if (eventType === 'change') {
       console.log(`File ${filename} was changed!`);
@@ -73,12 +73,12 @@ app.post('/api/linux-logs', (req, res) => {
         return;
       }
       console.log("Saving log");
+      res.send("API SUCCESSFUL");
     });
   }
 
     // console.log(`stdout: ${stdout}`);
     // console.error(`stderr: ${stderr}`);
-  res.send("API SUCCESSFUL");
 })
 
 app.listen(port, () => {
