@@ -4,6 +4,8 @@ const http = require("http");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const moment = require('moment');
+const axios = require('axios');
 // const spawn = require('child_process').spawn;
 const { exec } = require('child_process');
 
@@ -72,7 +74,27 @@ app.post('/api/linux-logs', (req, res) => {
         console.error(`exec error: ${error}`);
         return;
       }
-      console.log("Saving log");
+      fs.createReadStream('logs.txt')
+      .on('data', (chunk) => {
+        const lines = chunk.toString().split('\n').slice(-20);
+        const strResult = JSON.stringify(lines);  
+        axios.post("http://172.104.174.187:4000/api/set/arch-logs", 
+        { 
+          user_id: user,
+          data_src: "linux",
+          log_data: strResult
+        });
+      });
+      const currentTime = moment().format('MMMM Do YYYY hh:mm:ss a');
+                          
+      axios.post("http://172.104.174.187:4000/api/add-history", 
+      {
+        id: user, 
+        con_type: "linux", 
+        timestamp: currentTime
+      });
+
+      console.log("Linux Log Data Archived!");
       res.send("API SUCCESSFUL");
     });
   }
